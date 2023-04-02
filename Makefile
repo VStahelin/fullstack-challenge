@@ -21,3 +21,6 @@ build: ## Build all or c=<name> containers
 
 list-services: ## List all services
 	@docker compose -f $(DOCKER_COMPOSE_FILE) config --services
+
+join: ## Join to container c=<name>
+	@docker exec -it $(c) bash

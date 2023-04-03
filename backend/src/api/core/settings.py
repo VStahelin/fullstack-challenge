@@ -53,6 +53,19 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'api.authentication.services.authentication.SafeJWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+JWT = {
+    "JWT_SECRET_KEY": env.str("JWT_SECRET_KEY", default=""),
+    "REFRESH_TOKEN_SECRET": env.str("REFRESH_TOKEN_SECRET", default=""),
+    "REFRESH_TOKEN_EXPIRATION": timedelta(days=1),
+    "ACCESS_TOKEN_EXPIRATION": timedelta(minutes=5),
 }
 
 ROOT_URLCONF = "api.core.urls"

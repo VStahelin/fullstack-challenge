@@ -52,11 +52,17 @@ def signin(request: Request) -> Response:
     """
     Login a user.
     """
-    print(request.headers)
     serializer = SigninSerializer(data=request.headers)
     if serializer.is_valid():
         user = LoginUser().execute(**serializer.validated_data)
         if user:
-            return Response(status=status.HTTP_200_OK)
+            response = Response()
+            response.set_cookie(key='refreshtoken', value=user["refresh_token"], httponly=True)
+            response.data = {
+                "access_token": user["access_token"],
+                "refresh_token": user["refresh_token"],
+            }
+            response.status = status.HTTP_200_OK
+            return response
 
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)

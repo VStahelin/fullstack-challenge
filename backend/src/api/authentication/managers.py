@@ -1,6 +1,7 @@
 from typing import Any
 
 from django.contrib.auth.base_user import BaseUserManager
+from django.db import IntegrityError
 
 
 class UserManager(BaseUserManager):
@@ -11,9 +12,14 @@ class UserManager(BaseUserManager):
             raise TypeError("Users must have an name")
         if username is None:
             raise TypeError("Users must have a username")
-        user = self.model(username=username, name=name, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
+        try:
+            user = self.model(username=username, name=name, **extra_fields)
+            user.set_password(password)
+            user.save(using=self._db)
+
+        except IntegrityError:
+            raise ValueError("User already exists")
+
         return user
 
     def create_superuser(self, username: str, password: str, **extra_fields: Any):

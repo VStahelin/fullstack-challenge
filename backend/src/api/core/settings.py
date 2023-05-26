@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from datetime import timedelta
-from os.path import abspath, dirname, exists, join
+from os.path import dirname, exists, join
 
 import environ
 
@@ -55,6 +55,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'api.authentication.services.authentication.SafeJWTAuthentication',
+        "rest_framework.authentication.SessionAuthentication",
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',

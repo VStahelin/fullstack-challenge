@@ -37,7 +37,11 @@ def signup(request: Request) -> Response:
     """
     serializer = SignupSerializer(data=request.headers)
     if serializer.is_valid(raise_exception=True):
-        user = CreateNewUser().execute(**serializer.validated_data)
+        try:
+            user = CreateNewUser().execute(**serializer.validated_data)
+        except ValueError:
+            return Response("User already exists", status=status.HTTP_409_CONFLICT)
+
         if user:
             return Response(status=status.HTTP_200_OK)
 

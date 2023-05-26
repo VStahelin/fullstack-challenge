@@ -1,4 +1,3 @@
-
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 from api.authentication.models import User

@@ -1,5 +1,3 @@
-from abc import ABC
-
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -23,7 +21,9 @@ class SignupSerializer(serializers.Serializer):
                 "name": name,
             }
         else:
-            raise serializers.ValidationError("Must include 'username' and 'password' and 'name'.")
+            raise serializers.ValidationError(
+                "Must include 'username' and 'password' and 'name'."
+            )
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)

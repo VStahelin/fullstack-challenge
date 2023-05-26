@@ -13,7 +13,6 @@ if exists(env_file):
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env(
     "DJANGO_SECRET_KEY", default="4w()&a=*xvzwwf$1gxb+cm8*h-=m&xt^#co#8^sj&3w1r07soy"
@@ -22,7 +21,7 @@ SECRET_KEY = env(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DJANGO_DEBUG", False)
 ENVIRONMENT = env("ENV")
-ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]"]
 CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[])
 
 # Application definition
@@ -53,13 +52,11 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'api.authentication.services.authentication.SafeJWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "api.authentication.services.authentication.SafeJWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    )
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
 JWT = {
@@ -81,7 +78,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 
 # CORS
 CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS", default=False)
@@ -135,7 +131,7 @@ if env("ENABLE_SENTRY"):
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
+    {  # ruff: noqa: E501
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {

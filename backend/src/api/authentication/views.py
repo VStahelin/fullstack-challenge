@@ -61,7 +61,9 @@ def signin(request: Request) -> Response:
         user = LoginUser().execute(**serializer.validated_data)
         if user:
             response = Response()
-            response.set_cookie(key='refreshtoken', value=user["refresh_token"], httponly=True)
+            response.set_cookie(
+                key="refreshtoken", value=user["refresh_token"], httponly=True
+            )
             response.data = {
                 "access_token": user["access_token"],
                 "refresh_token": user["refresh_token"],

@@ -12,14 +12,14 @@ USER_LIST_RESPONSE = OpenApiExample(
             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             "name": "string",
             "password": "string",
-            "username": "string"
+            "username": "string",
         },
         {
             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             "name": "string",
             "password": "string",
-            "username": "string"
-        }
+            "username": "string",
+        },
     ],
     response_only=True,
     status_codes=["200"],
@@ -44,5 +44,5 @@ user_list = {
     "responses": {status.HTTP_200_OK: UserSerializer(many=True)},
     "summary": "List all users",
     "tags": [auth_tag],
-    "examples": [USER_LIST_RESPONSE]
+    "examples": [USER_LIST_RESPONSE],
 }

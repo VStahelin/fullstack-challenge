@@ -3,7 +3,6 @@ from django.urls import include, path
 from . import views
 
 from api.authentication import urls as authentication_urls
-from api.project import urls as project_urls
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [

@@ -1,19 +1,25 @@
 # Django
-Django==4.0.2
-django-environ==0.4.5
+Django==4.1.7
+django-environ==0.10.0
 
 # REST Framework
-djangorestframework==3.13.1
-django-cors-headers==3.8.0
+djangorestframework==3.14.0
+django-cors-headers==3.14.0
 
 # Webserver
 gunicorn==20.1.0
 
 # Database
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.5
 
 # Static files
-whitenoise==5.3.0
+whitenoise==6.4.0
 
 # Sentry
-sentry-sdk==1.5.12
+sentry-sdk==1.18.0
+
+#Docs
+drf-spectacular==0.26.1
+
+#JTW
+djangorestframework-jwt==1.11.0

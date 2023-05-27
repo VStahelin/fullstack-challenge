@@ -1,23 +1,17 @@
 import os
 from pathlib import Path
 from datetime import timedelta
-from os.path import abspath, dirname, exists, join
+from os.path import dirname, exists, join
 
 import environ
 
 # Load operating system env variables and prepare to use them
 env = environ.Env()
-
-# .env file, should load only in development environment
 env_file = join(dirname(__file__), "local.env")
 if exists(env_file):
     environ.Env.read_env(str(env_file))
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env(
@@ -27,10 +21,8 @@ SECRET_KEY = env(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DJANGO_DEBUG", False)
 ENVIRONMENT = env("ENV")
-ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]"]
 CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[])
-
-# Application definition
 
 # Application definition
 DJANGO_APPS = [
@@ -43,11 +35,15 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["rest_framework"]
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "drf_spectacular",
+]
 
 PROJECT_APPS = [
     "api.core",
     "api.project",
+    "api.authentication",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
@@ -55,7 +51,23 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "api.authentication.services.authentication.SafeJWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
+
+JWT = {
+    "JWT_SECRET_KEY": env.str("JWT_SECRET_KEY", default=""),
+    "REFRESH_TOKEN_SECRET": env.str("REFRESH_TOKEN_SECRET", default=""),
+    "REFRESH_TOKEN_EXPIRATION": timedelta(days=1),
+    "ACCESS_TOKEN_EXPIRATION": timedelta(minutes=5),
+}
+
+ROOT_URLCONF = "api.core.urls"
+AUTH_USER_MODEL = "authentication.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -66,8 +78,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-ROOT_URLCONF = "api.core.urls"
 
 # CORS
 CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS", default=False)
@@ -94,7 +104,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "api.core.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -108,7 +117,6 @@ DATABASES = {
     }
 }
 
-
 # Logging
 if env("ENABLE_SENTRY"):
     import sentry_sdk
@@ -119,12 +127,11 @@ if env("ENABLE_SENTRY"):
         integrations=[DjangoIntegration()],
     )
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
+    {  # ruff: noqa: E501
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
@@ -138,7 +145,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -149,7 +155,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
